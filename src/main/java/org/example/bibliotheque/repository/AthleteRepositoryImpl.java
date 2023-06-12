@@ -3,7 +3,7 @@ package org.example.bibliotheque.repository;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.InsertOneResult;
 import org.bson.Document;
-import org.example.bibliotheque.model.athlete;
+import org.example.bibliotheque.model.Athlete;
 
 import static org.example.bibliotheque.mapper.AthleteMapper.athleteToDocument;
 
@@ -15,7 +15,7 @@ public class AthleteRepositoryImpl implements AthleteRepository{
     }
 
     @Override
-    public InsertOneResult save(athlete athlete) {
+    public InsertOneResult save(Athlete athlete) {
         return this.collection.insertOne(athleteToDocument(athlete));
     }
 }
