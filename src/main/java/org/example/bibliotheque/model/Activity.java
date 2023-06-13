@@ -56,4 +56,14 @@ public class Activity {
     public void setLoad(int load) {
         this.load = load;
     }
+
+    public String toString() {
+        return "Activity{" +
+                "name='" + name + '\'' +
+                ", duration=" + duration +
+                ", date=" + date +
+                ", RPE=" + RPE +
+                ", load=" + load +
+                '}';
+    }
 }
