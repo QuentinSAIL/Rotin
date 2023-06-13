@@ -37,7 +37,7 @@ public class Main {
                 athleteRepository.save(athlete);
 
                 // create an activity
-                Activity activity = new Activity("Running", 30, new Date(), 5, 150);
+                Activity activity = new Activity("","Running", 30, new Date(), 5, 150);
                 activityRepository.save(activity);
             } else if (action.equalsIgnoreCase("read")) {
                 // Read all activities

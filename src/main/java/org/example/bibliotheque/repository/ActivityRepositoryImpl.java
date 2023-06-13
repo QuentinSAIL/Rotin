@@ -1,14 +1,20 @@
 package org.example.bibliotheque.repository;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
+import org.bson.types.ObjectId;
+import org.example.bibliotheque.mapper.ActivityMapper;
 import org.example.bibliotheque.model.Activity;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import static com.mongodb.client.model.Filters.eq;
 import static org.example.bibliotheque.mapper.ActivityMapper.activityToDocument;
+import static org.example.bibliotheque.mapper.ActivityMapper.documentToActivity;
 
 public class ActivityRepositoryImpl implements ActivityRepository{
     MongoCollection<Document> collection;
@@ -18,8 +24,9 @@ public class ActivityRepositoryImpl implements ActivityRepository{
     }
 
     @Override
-    public InsertOneResult save(Activity activity) {
-        return this.collection.insertOne(activityToDocument(activity));
+    public String save(Activity activity) {
+        InsertOneResult result = this.collection.insertOne(activityToDocument(activity));
+        return result.getInsertedId().asString().getValue();
     }
 
     @Override
@@ -32,13 +39,22 @@ public class ActivityRepositoryImpl implements ActivityRepository{
         return activities;
     }
 
-    private Activity documentToActivity(Document document) {
-        String name = document.getString("name");
-        int duration = document.getInteger("duration");
-        Date date = document.getDate("date");
-        int RPE = document.getInteger("RPE");
-        int load = document.getInteger("load");
-
-        return new Activity(name, duration, date, RPE, load);
+    @Override
+    public Optional<Activity> findOne(String id) {
+        Document doc = collection.find(eq("_id", new ObjectId(id))).first();
+        return Optional.ofNullable(doc).map(ActivityMapper::documentToActivity);
     }
+
+    @Override
+    public UpdateResult update(String id, Activity activity) {
+        UpdateResult result = collection.replaceOne(eq("_id", new ObjectId(id)), activityToDocument(activity));
+        return result;
+    }
+
+    @Override
+    public DeleteResult delete(String id) {
+        DeleteResult result = collection.deleteOne(eq("_id", new ObjectId(id)));
+        return result;
+    }
+
 }
