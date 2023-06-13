@@ -2,13 +2,13 @@ package org.example.bibliotheque.model;
 
 import java.util.Date;
 
-public class athlete {
+public class Athlete {
     private String firstName;
     private String name;
     private Date birthday;
     private String sex;
 
-    public athlete(String firstName, String name, Date birthday, String sex) {
+    public Athlete(String firstName, String name, Date birthday, String sex) {
         this.firstName = firstName;
         this.name = name;
         this.birthday = birthday;
